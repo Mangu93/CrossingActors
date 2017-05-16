@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Crossing Actors</string>
+    <string name="cross_check_input">Input the name of the actor or actress you want to cross check.</string>
+    <string name="input_as_many">Input as many actors or actress that you want</string>
+    <string name="search">Search</string>
+    <string name="compare">Compare</string>
+    <string name="error_message">
+        An error has occurred
+    </string>
+    <string name="compare_movies">Compare movies</string>
+    <string name="been_together">These actors have been together in these movies:</string>
+</resources>
