@@ -18,7 +18,7 @@ public class ActorServiceFactory {
     public static ActorService makeActorService() {
         return makeActorService(makeGson());
     }
-    public static final String BASE_URL ="https://api.themoviedb.org/3/";
+    private static final String BASE_URL ="https://api.themoviedb.org/3/";
     private static ActorService makeActorService(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

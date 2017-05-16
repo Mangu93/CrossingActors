@@ -1,14 +1,13 @@
 package com.mangu.crossingactors.Networking;
 
 import com.mangu.crossingactors.Model.ActorListResponse;
-import com.mangu.crossingactors.Model.Result;
+import com.mangu.crossingactors.Model.Credits;
 import com.mangu.crossingactors.Networking.Services.ActorService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 @Singleton
 public class DataManager {
@@ -24,8 +23,8 @@ public class DataManager {
         return actorService.getActorList(name);
     }
 
-    public Single<Result> getActor(String id) {
-        return null;
+    public Observable<Credits> getActor(String id) {
+        return actorService.getActor(id);
     }
 
 }

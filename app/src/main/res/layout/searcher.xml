@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:layout_width="wrap_content"

@@ -1,20 +1,23 @@
 package com.mangu.crossingactors;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.mangu.crossingactors.Model.ActorListResponse;
+import com.mangu.crossingactors.Model.Cast;
+import com.mangu.crossingactors.Model.Credits;
 import com.mangu.crossingactors.Model.Result;
 import com.mangu.crossingactors.Networking.DataManager;
 import com.mangu.crossingactors.Networking.Services.ActorService;
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int MESSAGE_QUERY_UPDATE = 5612;
     public static final int QUERY_UPDATE_DELAY_MILLIS = 100;
 
-    ViewGroup.LayoutParams original_params;
     @BindView(R.id.floating_search_view)
     FloatingSearchView floatingSearchView;
     @BindView(R.id.recycler_view)
@@ -48,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Result> actors = new ArrayList<>();
     public static ActorService myActorFactory = makeActorService();
     SearchAdapter searchAdapter;
+    List<String> movies = new ArrayList<>();
+    List<String> coincidences = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -98,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 DataManager dm = new DataManager(myActorFactory);
                 Observable<ActorListResponse> listActors = dm.getActorList(query);
                 listActors.compose(SchedulerUtils.ioToMain())
-                        .subscribe(actorListResponse -> showActors(actorListResponse.results), throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
+                        .subscribe(actorListResponse -> showActors(actorListResponse.results),
+                                throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
             }
         }
     };
@@ -110,7 +114,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void compareMovies(View view) {
-        ArrayList<Result> actor_results = searchAdapter.getDataSet();
 
+        ArrayList<Result> actor_results = searchAdapter.getDataSet();
+        if(actor_results.size() >=2) {
+            DataManager dm = new DataManager(myActorFactory);
+            for (int index = 0; index < actor_results.size(); index++) {
+                Result e = actor_results.get(index);
+                boolean last = false;
+                if (index + 1 == actor_results.size()) {
+                    last = true;
+                }
+                final boolean l = last;
+                Observable<Credits> castObservable = dm.getActor(Integer.toString(e.getId()));
+                castObservable.compose(SchedulerUtils.ioToMain())
+                        .subscribe(act -> processActor(act, l),
+                                throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
+            }
+
+        }else {
+            Snackbar.make(view.getRootView(), "You need to add at least two actors", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void processCoincidences() {
+        Intent intent = new Intent(this, ComparationDone.class);
+        intent.putExtra(Cast.class.getName(), (ArrayList) coincidences);
+        startActivity(intent);
+    }
+
+    private void processActor(Credits response, boolean last_to_pass) {
+        for (Cast cast : response.getCast()) {
+            if (movies.contains(cast.getTitle())) {
+                coincidences.add(cast.getTitle());
+            } else {
+                movies.add(cast.getTitle());
+            }
+        }
+        if (last_to_pass) {
+            processCoincidences();
+        }
     }
 }
