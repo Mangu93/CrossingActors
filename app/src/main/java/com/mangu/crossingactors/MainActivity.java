@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Result> actors = new ArrayList<>();
     public static ActorService myActorFactory = makeActorService();
     SearchAdapter searchAdapter;
-    List<String> movies = new ArrayList<>();
-    List<String> coincidences = new ArrayList<>();
 
+    public static ComparatorFactory.CoincidenceMap coincidenceMap = new ComparatorFactory.CoincidenceMap();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,12 +108,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showActors(List<Result> results) {
         btnSearch.setVisibility(View.INVISIBLE);
-
         floatingSearchView.swapSuggestions(results);
     }
 
     public void compareMovies(View view) {
-
         ArrayList<Result> actor_results = searchAdapter.getDataSet();
         if(actor_results.size() >=2) {
             DataManager dm = new DataManager(myActorFactory);
@@ -136,22 +133,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void processCoincidences() {
+    private void processCoincidences(List<String> movieCoincidences) {
+        coincidenceMap.restart();
         Intent intent = new Intent(this, ComparationDone.class);
-        intent.putExtra(Cast.class.getName(), (ArrayList) coincidences);
+        intent.putExtra(Cast.class.getName(), (ArrayList) movieCoincidences);
         startActivity(intent);
     }
 
     private void processActor(Credits response, boolean last_to_pass) {
-        for (Cast cast : response.getCast()) {
-            if (movies.contains(cast.getTitle())) {
-                coincidences.add(cast.getTitle());
-            } else {
-                movies.add(cast.getTitle());
-            }
+        for(Cast cast: response.getCast()) {
+            coincidenceMap.add(cast.getTitle());
         }
-        if (last_to_pass) {
-            processCoincidences();
+        if(last_to_pass) {
+            processCoincidences(coincidenceMap.getCoincidences(searchAdapter.getItemCount()));
         }
     }
 }
