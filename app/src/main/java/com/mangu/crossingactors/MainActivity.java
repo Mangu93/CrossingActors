@@ -1,5 +1,6 @@
 package com.mangu.crossingactors;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 
 import static com.mangu.crossingactors.Networking.Services.ActorServiceFactory.makeActorService;
+import static com.mangu.crossingactors.Utils.UtilsFactory.START_MAIN_ACTIVITY_FROM_COMPARATION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     SearchAdapter searchAdapter;
 
     public static ComparatorFactory.CoincidenceMap coincidenceMap = new ComparatorFactory.CoincidenceMap();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void compareMovies(View view) {
         ArrayList<Result> actor_results = searchAdapter.getDataSet();
-        if(actor_results.size() >=2) {
+        if (actor_results.size() >= 2) {
             DataManager dm = new DataManager(myActorFactory);
             for (int index = 0; index < actor_results.size(); index++) {
                 Result e = actor_results.get(index);
@@ -129,23 +132,33 @@ public class MainActivity extends AppCompatActivity {
                                 throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
             }
 
-        }else {
-            Snackbar.make(view.getRootView(), "You need to add at least two actors", Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), "You need to add at least two actors", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == START_MAIN_ACTIVITY_FROM_COMPARATION) {
+            if (resultCode == Activity.RESULT_FIRST_USER) {
+                compareMovies(null);
+            }
         }
     }
 
     private void processCoincidences(List<String> movieCoincidences) {
-        coincidenceMap.restart();
+        coincidenceMap.restartCoincidences();
         Intent intent = new Intent(this, ComparationDone.class);
         intent.putExtra(Cast.class.getName(), (ArrayList) movieCoincidences);
-        startActivity(intent);
+        startActivityForResult(intent, START_MAIN_ACTIVITY_FROM_COMPARATION);
     }
 
     private void processActor(Credits response, boolean last_to_pass) {
-        for(Cast cast: response.getCast()) {
+        for (Cast cast : response.getCast()) {
             coincidenceMap.add(cast.getTitle());
         }
-        if(last_to_pass) {
+        coincidenceMap.restartProcessed();
+        if (last_to_pass) {
             processCoincidences(coincidenceMap.getCoincidences(searchAdapter.getItemCount()));
         }
     }
