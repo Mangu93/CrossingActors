@@ -25,4 +25,14 @@
         android:textStyle="bold|italic"
 
         tools:text="Name Surname" />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:id="@+id/iv_icon_delete"
+        android:scaleType="fitEnd"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:contentDescription="@string/delete"
+        android:src="@android:drawable/ic_menu_delete"
+        />
 </LinearLayout>

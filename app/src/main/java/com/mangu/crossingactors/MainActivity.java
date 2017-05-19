@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         searchAdapter = new SearchAdapter(getApplicationContext(), actors);
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(linearLayout);
+
         floatingSearchView.setOnQueryChangeListener((oldQuery, newQuery) -> {
             if (newQuery.length() > 2) {
                 Message message = Message.obtain(mHandler, MESSAGE_QUERY_UPDATE, newQuery);

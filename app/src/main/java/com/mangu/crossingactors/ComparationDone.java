@@ -1,7 +1,10 @@
 package com.mangu.crossingactors;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,5 +37,9 @@ public class ComparationDone extends AppCompatActivity {
         if(results.size() == 0) {
             tvBeenTogether.setText("Sorry, these actors have no movies in common. \n");
         }
+        listview.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            Snackbar.make(adapterView.getRootView(), "TEST", Snackbar.LENGTH_SHORT).show();
+            return true;
+        });
     }
 }

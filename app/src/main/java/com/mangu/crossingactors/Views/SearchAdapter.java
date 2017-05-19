@@ -45,8 +45,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
 
     @Override
     public void onBindViewHolder(ResultHolder holder, int position) {
-        holder.name.setText(dataSet.get(position).getName());
-        String img_url = formUrlPic(dataSet.get(position).getProfilePath());
+        final Result mResultItem = dataSet.get(position);
+        holder.name.setText(mResultItem.getName());
+        String img_url = formUrlPic(mResultItem.getProfilePath());
         Glide.with(context)
                 .load(img_url)
                 .asBitmap()
@@ -70,15 +71,28 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
         }
     }
 
-    public class ResultHolder extends RecyclerView.ViewHolder {
+    public void delete(int position) {
+        dataSet.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView name;
         String id;
         ImageView searchIcon;
-
+        ImageView delete;
         public ResultHolder(View item) {
             super(item);
             searchIcon = (ImageView) item.findViewById(R.id.iv_icon_search);
             name = (TextView) item.findViewById(R.id.tv_name);
+            delete = (ImageView) item.findViewById(R.id.iv_icon_delete);
+            delete.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            delete(getAdapterPosition());
         }
     }
 
