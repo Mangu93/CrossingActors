@@ -52,6 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
                 .load(img_url)
                 .asBitmap()
                 .centerCrop()
+                .placeholder(R.drawable.ic_perm_contact_calendar_black_24dp)
                 .into(new BitmapImageViewTarget(holder.searchIcon){
                     @Override
                     protected void setResource(Bitmap resource) {
