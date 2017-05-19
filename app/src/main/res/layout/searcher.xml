@@ -8,21 +8,21 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:contentDescription="@string/search"
-
+        android:id="@+id/iv_icon_search"
         android:src="@android:drawable/ic_menu_search" />
 
     <TextView
         android:id="@+id/tv_name"
-        android:paddingStart="10dp"
-        android:paddingEnd="0dp"
-        android:paddingTop="10dp"
-        android:textStyle="bold|italic"
-        android:textSize="15sp"
         android:layout_width="wrap_content"
-        tools:text="Name Surname"
+        android:layout_height="wrap_content"
+        android:paddingEnd="0dp"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:textSize="15sp"
+        android:textStyle="bold|italic"
 
-        android:layout_height="wrap_content" />
+        tools:text="Name Surname" />
 </LinearLayout>

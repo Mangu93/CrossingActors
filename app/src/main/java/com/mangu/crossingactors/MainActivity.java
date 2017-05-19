@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
-        searchAdapter = new SearchAdapter(actors);
+        searchAdapter = new SearchAdapter(getApplicationContext(), actors);
         recyclerView.setAdapter(searchAdapter);
         recyclerView.setLayoutManager(linearLayout);
         floatingSearchView.setOnQueryChangeListener((oldQuery, newQuery) -> {

@@ -2,6 +2,9 @@ package com.mangu.crossingactors.Views;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +12,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.mangu.crossingactors.Model.Result;
 import com.mangu.crossingactors.R;
 
 import java.util.ArrayList;
+
+import static com.mangu.crossingactors.Utils.ImageFactory.formUrlPic;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHolder> {
     public ArrayList<Result> getDataSet() {
         return dataSet;
     }
 
+    private Context context;
     private ArrayList<Result> dataSet = new ArrayList<>();
 
-    public SearchAdapter(ArrayList<Result> data) {
+    public SearchAdapter(Context context, ArrayList<Result> data) {
         this.dataSet = data;
+        this.context = context;
     }
 
     @Override
@@ -37,13 +46,26 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
     @Override
     public void onBindViewHolder(ResultHolder holder, int position) {
         holder.name.setText(dataSet.get(position).getName());
+        String img_url = formUrlPic(dataSet.get(position).getProfilePath());
+        Glide.with(context)
+                .load(img_url)
+                .asBitmap()
+                .centerCrop()
+                .into(new BitmapImageViewTarget(holder.searchIcon){
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circular = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                        circular.setCircular(true);
+                        holder.searchIcon.setImageDrawable(circular);
+                    }
+                });
     }
 
     @Override
     public int getItemCount() {
-        if(dataSet == null) {
+        if (dataSet == null) {
             return 0;
-        }else {
+        } else {
             return dataSet.size();
         }
     }
@@ -53,8 +75,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
         String id;
         ImageView searchIcon;
 
-       public ResultHolder(View item) {
+        public ResultHolder(View item) {
             super(item);
+            searchIcon = (ImageView) item.findViewById(R.id.iv_icon_search);
             name = (TextView) item.findViewById(R.id.tv_name);
         }
     }
