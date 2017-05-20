@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -55,7 +57,7 @@ public class ComparationDone extends AppCompatActivity implements AdapterView.On
     private String poster_path = "";
     private ArrayList<String> posters;
     private View anchor_view;
-
+    boolean isImageFitToScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +119,21 @@ public class ComparationDone extends AppCompatActivity implements AdapterView.On
                         iv_poster.setImageBitmap(resource);
                     }
                 });
+
+        iv_poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isImageFitToScreen) {
+                    isImageFitToScreen=false;
+                    iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                    iv_poster.setAdjustViewBounds(true);
+                }else{
+                    isImageFitToScreen=true;
+                    iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                    iv_poster.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
+            }
+        });
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.showAtLocation(anchor_view, Gravity.CENTER, 0, 0);
