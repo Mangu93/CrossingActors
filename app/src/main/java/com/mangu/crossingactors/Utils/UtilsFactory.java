@@ -9,12 +9,13 @@ import android.widget.LinearLayout;
 
 public class UtilsFactory {
     public static final int START_MAIN_ACTIVITY_FROM_COMPARATION = 1982;
+
     public static Button createRetryButton(@NonNull Context context) {
         Button btn = new Button(context);
         btn.setText("Retry");
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity= Gravity.CENTER;
+        layoutParams.gravity = Gravity.CENTER;
         btn.setLayoutParams(layoutParams);
         return btn;
     }

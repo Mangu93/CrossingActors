@@ -12,11 +12,11 @@ import retrofit2.http.Query;
 import static com.mangu.crossingactors.BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
 public interface ActorService {
-    @Headers({"api_key: " +THE_MOVIE_DB_API_TOKEN})
+    @Headers({"api_key: " + THE_MOVIE_DB_API_TOKEN})
     @GET("search/person")
     Observable<ActorListResponse> getActorList(@Query("query") String name);
 
-    @Headers({"api_key: " +THE_MOVIE_DB_API_TOKEN})
+    @Headers({"api_key: " + THE_MOVIE_DB_API_TOKEN})
     @GET("person/{person_id}/movie_credits")
     Observable<Credits> getActor(@Path("person_id") String id);
 }

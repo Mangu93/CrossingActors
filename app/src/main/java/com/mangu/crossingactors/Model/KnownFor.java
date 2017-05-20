@@ -1,4 +1,3 @@
-
 package com.mangu.crossingactors.Model;
 
 import com.google.gson.annotations.Expose;

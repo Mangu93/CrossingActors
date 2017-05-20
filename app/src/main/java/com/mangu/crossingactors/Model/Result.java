@@ -1,4 +1,3 @@
-
 package com.mangu.crossingactors.Model;
 
 import android.annotation.SuppressLint;
@@ -94,6 +93,6 @@ public class Result implements SearchSuggestion {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(getName());
-        parcel.writeInt(getId() > 0 ? 1:0);
+        parcel.writeInt(getId() > 0 ? 1 : 0);
     }
 }

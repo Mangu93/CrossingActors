@@ -7,10 +7,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding {
-        enabled = true
-    }
 
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "4g" // 2g should be also OK
+    }
     defaultConfig {
         applicationId "com.mangu.crossingactors"
         minSdkVersion 17

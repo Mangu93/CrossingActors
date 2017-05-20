@@ -35,25 +35,37 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 
 import static com.mangu.crossingactors.Networking.Services.ActorServiceFactory.makeActorService;
+import static com.mangu.crossingactors.Utils.ComparatorFactory.MOVIE_POSTER_KEY;
 import static com.mangu.crossingactors.Utils.UtilsFactory.START_MAIN_ACTIVITY_FROM_COMPARATION;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final Comparator<Result> actor_comparator = ComparatorFactory.getActorComparator();
     public static final int MESSAGE_QUERY_UPDATE = 5612;
     public static final int QUERY_UPDATE_DELAY_MILLIS = 100;
-
+    private static final Comparator<Result> actor_comparator = ComparatorFactory.getActorComparator();
+    public static ActorService myActorFactory = makeActorService();
+    public static ComparatorFactory.CoincidenceMap coincidenceMap = new ComparatorFactory.CoincidenceMap();
     @BindView(R.id.floating_search_view)
     FloatingSearchView floatingSearchView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.btn_search)
     Button btnSearch;
-    private ArrayList<Result> actors = new ArrayList<>();
-    public static ActorService myActorFactory = makeActorService();
     SearchAdapter searchAdapter;
-
-    public static ComparatorFactory.CoincidenceMap coincidenceMap = new ComparatorFactory.CoincidenceMap();
+    private ArrayList<Result> actors = new ArrayList<>();
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MESSAGE_QUERY_UPDATE) {
+                String query = (String) msg.obj;
+                DataManager dm = new DataManager(myActorFactory);
+                Observable<ActorListResponse> listActors = dm.getActorList(query);
+                listActors.compose(SchedulerUtils.ioToMain())
+                        .subscribe(actorListResponse -> showActors(actorListResponse.results),
+                                throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,21 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == MESSAGE_QUERY_UPDATE) {
-                String query = (String) msg.obj;
-                DataManager dm = new DataManager(myActorFactory);
-                Observable<ActorListResponse> listActors = dm.getActorList(query);
-                listActors.compose(SchedulerUtils.ioToMain())
-                        .subscribe(actorListResponse -> showActors(actorListResponse.results),
-                                throwable -> Log.e("ObservableError", throwable.getLocalizedMessage()));
-            }
-        }
-    };
-
     public void showActors(List<Result> results) {
         btnSearch.setVisibility(View.INVISIBLE);
         floatingSearchView.swapSuggestions(results);
@@ -149,13 +146,15 @@ public class MainActivity extends AppCompatActivity {
     private void processCoincidences(List<String> movieCoincidences) {
         coincidenceMap.restartCoincidences();
         Intent intent = new Intent(this, ComparationDone.class);
+        List<String> posters = coincidenceMap.getPosters();
         intent.putExtra(Cast.class.getName(), (ArrayList) movieCoincidences);
+        intent.putExtra(MOVIE_POSTER_KEY, (ArrayList) posters);
         startActivityForResult(intent, START_MAIN_ACTIVITY_FROM_COMPARATION);
     }
 
     private void processActor(Credits response, boolean last_to_pass) {
         for (Cast cast : response.getCast()) {
-            coincidenceMap.add(cast.getTitle());
+            coincidenceMap.add(cast.getTitle(), (String) cast.getPosterPath());
         }
         coincidenceMap.restartProcessed();
         if (last_to_pass) {

@@ -15,10 +15,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.mangu.crossingactors.BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
 public class ActorServiceFactory {
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
+
     public static ActorService makeActorService() {
         return makeActorService(makeGson());
     }
-    private static final String BASE_URL ="https://api.themoviedb.org/3/";
+
     private static ActorService makeActorService(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

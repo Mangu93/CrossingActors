@@ -22,16 +22,15 @@ import java.util.ArrayList;
 import static com.mangu.crossingactors.Utils.ImageFactory.formUrlPic;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHolder> {
-    public ArrayList<Result> getDataSet() {
-        return dataSet;
-    }
-
     private Context context;
     private ArrayList<Result> dataSet = new ArrayList<>();
-
     public SearchAdapter(Context context, ArrayList<Result> data) {
         this.dataSet = data;
         this.context = context;
+    }
+
+    public ArrayList<Result> getDataSet() {
+        return dataSet;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
                 .asBitmap()
                 .centerCrop()
                 .placeholder(R.drawable.ic_perm_contact_calendar_black_24dp)
-                .into(new BitmapImageViewTarget(holder.searchIcon){
+                .into(new BitmapImageViewTarget(holder.searchIcon) {
                     @Override
                     protected void setResource(Bitmap resource) {
                         RoundedBitmapDrawable circular = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
@@ -77,11 +76,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
         notifyItemRemoved(position);
     }
 
-    public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public void swapResults(ArrayList<Result> results) {
+        this.dataSet = results;
+
+        notifyDataSetChanged();
+    }
+
+    public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
         String id;
         ImageView searchIcon;
         ImageView delete;
+
         public ResultHolder(View item) {
             super(item);
             searchIcon = (ImageView) item.findViewById(R.id.iv_icon_search);
@@ -95,11 +101,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
         public void onClick(View view) {
             delete(getAdapterPosition());
         }
-    }
-
-    public void swapResults(ArrayList<Result> results) {
-        this.dataSet = results;
-
-        notifyDataSetChanged();
     }
 }

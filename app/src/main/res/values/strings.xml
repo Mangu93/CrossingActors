@@ -11,4 +11,5 @@
     <string name="been_together">These actors have been together in these movies:</string>
     <string name="delete">Delete</string>
     <string name="retry">Sorry, these actors have no movies in common. \n\nIf you want, you can retry the search</string>
+    <string name="poster">Poster</string>
 </resources>

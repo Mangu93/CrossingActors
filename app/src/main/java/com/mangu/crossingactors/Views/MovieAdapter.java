@@ -18,18 +18,18 @@ public class MovieAdapter extends ArrayAdapter<String> {
     public String name;
     private Context context;
     private ArrayList<String> dataSet;
-   public MovieAdapter(Context context, ArrayList<String> dataSet) {
-       super(context, R.layout.movie_item, dataSet);
-       this.context = context;
-       this.dataSet = dataSet;
-   }
+
+    public MovieAdapter(Context context, ArrayList<String> dataSet) {
+        super(context, R.layout.movie_item, dataSet);
+        this.context = context;
+        this.dataSet = dataSet;
+    }
+
     public void swapItems(ArrayList<String> newTasks) {
         this.dataSet = newTasks;
         notifyDataSetChanged();
     }
-    private static class ViewHolder{
-        protected TextView name;
-    }
+
     @Nullable
     @Override
     public String getItem(int position) {
@@ -63,6 +63,10 @@ public class MovieAdapter extends ArrayAdapter<String> {
         viewHolder.name.setText(movie);
 
         return convertView;
+    }
+
+    private static class ViewHolder {
+        protected TextView name;
     }
 
 }
