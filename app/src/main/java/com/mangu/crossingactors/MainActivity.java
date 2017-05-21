@@ -144,10 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == START_MAIN_ACTIVITY_FROM_COMPARATION) {
-            if (resultCode == Activity.RESULT_FIRST_USER) {
+        if (requestCode == START_MAIN_ACTIVITY_FROM_COMPARATION && resultCode == Activity.RESULT_FIRST_USER) {
                 compareMovies(null);
-            }
         }
     }
 
