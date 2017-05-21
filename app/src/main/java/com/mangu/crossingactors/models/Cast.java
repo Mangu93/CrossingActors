@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Model;
+package com.mangu.crossingactors.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

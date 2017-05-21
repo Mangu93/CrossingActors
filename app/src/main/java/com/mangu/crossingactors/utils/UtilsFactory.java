@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Utils;
+package com.mangu.crossingactors.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,7 +15,8 @@ public class UtilsFactory {
     public static Button createRetryButton(@NonNull Context context) {
         Button btn = new Button(context);
         btn.setText(R.string.retry_btn);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams layoutParams =
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;
         btn.setLayoutParams(layoutParams);

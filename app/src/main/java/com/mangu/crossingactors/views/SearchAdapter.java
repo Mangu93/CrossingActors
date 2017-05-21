@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Views;
+package com.mangu.crossingactors.views;
 
 
 import android.content.Context;
@@ -14,23 +14,24 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.mangu.crossingactors.Model.Result;
+import com.mangu.crossingactors.models.Result;
 import com.mangu.crossingactors.R;
 
 import java.util.ArrayList;
 
-import static com.mangu.crossingactors.Utils.ImageFactory.formUrlPic;
+import static com.mangu.crossingactors.utils.ImageFactory.formUrlPic;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHolder> {
-    private Context context;
-    private ArrayList<Result> dataSet = new ArrayList<>();
+    private Context mContext;
+    private ArrayList<Result> mDataSet = new ArrayList<>();
+
     public SearchAdapter(Context context, ArrayList<Result> data) {
-        this.dataSet = data;
-        this.context = context;
+        this.mDataSet = data;
+        this.mContext = context;
     }
 
     public ArrayList<Result> getDataSet() {
-        return dataSet;
+        return mDataSet;
     }
 
     @Override
@@ -44,18 +45,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
 
     @Override
     public void onBindViewHolder(ResultHolder holder, int position) {
-        final Result mResultItem = dataSet.get(position);
+        final Result mResultItem = mDataSet.get(position);
         holder.name.setText(mResultItem.getName());
-        String img_url = formUrlPic(mResultItem.getProfilePath());
-        Glide.with(context)
-                .load(img_url)
+        String imgUrl = formUrlPic(mResultItem.getProfilePath());
+        Glide.with(mContext)
+                .load(imgUrl)
                 .asBitmap()
                 .centerCrop()
                 .placeholder(R.drawable.ic_perm_contact_calendar_black_24dp)
                 .into(new BitmapImageViewTarget(holder.searchIcon) {
                     @Override
                     protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circular = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                        RoundedBitmapDrawable circular =
+                                RoundedBitmapDrawableFactory.create(
+                                        mContext.getResources(), resource);
                         circular.setCircular(true);
                         holder.searchIcon.setImageDrawable(circular);
                     }
@@ -64,20 +67,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
 
     @Override
     public int getItemCount() {
-        if (dataSet == null) {
+        if (mDataSet == null) {
             return 0;
         } else {
-            return dataSet.size();
+            return mDataSet.size();
         }
     }
 
     public void delete(int position) {
-        dataSet.remove(position);
+        mDataSet.remove(position);
         notifyItemRemoved(position);
     }
 
     public void swapResults(ArrayList<Result> results) {
-        this.dataSet = results;
+        this.mDataSet = results;
 
         notifyDataSetChanged();
     }

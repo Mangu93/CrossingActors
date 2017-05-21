@@ -1,7 +1,7 @@
-package com.mangu.crossingactors.Networking.Services;
+package com.mangu.crossingactors.networking.services;
 
-import com.mangu.crossingactors.Model.ActorListResponse;
-import com.mangu.crossingactors.Model.Credits;
+import com.mangu.crossingactors.models.ActorListResponse;
+import com.mangu.crossingactors.models.Credits;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

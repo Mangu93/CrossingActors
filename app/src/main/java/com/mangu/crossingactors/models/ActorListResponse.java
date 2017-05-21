@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Model;
+package com.mangu.crossingactors.models;
 
 import java.util.List;
 

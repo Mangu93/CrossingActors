@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Views;
+package com.mangu.crossingactors.views;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,29 +16,29 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends ArrayAdapter<String> {
     public String name;
-    private Context context;
-    private ArrayList<String> dataSet;
+    private Context mContext;
+    private ArrayList<String> mDataSet;
 
     public MovieAdapter(Context context, ArrayList<String> dataSet) {
         super(context, R.layout.movie_item, dataSet);
-        this.context = context;
-        this.dataSet = dataSet;
+        this.mContext = context;
+        this.mDataSet = dataSet;
     }
 
     public void swapItems(ArrayList<String> newTasks) {
-        this.dataSet = newTasks;
+        this.mDataSet = newTasks;
         notifyDataSetChanged();
     }
 
     @Nullable
     @Override
     public String getItem(int position) {
-        return dataSet.get(position);
+        return mDataSet.get(position);
     }
 
     @Override
     public int getCount() {
-        return dataSet.size();
+        return mDataSet.size();
     }
 
     @NonNull

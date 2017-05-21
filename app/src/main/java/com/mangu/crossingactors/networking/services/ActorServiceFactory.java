@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Networking.Services;
+package com.mangu.crossingactors.networking.services;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -40,7 +40,8 @@ public class ActorServiceFactory {
         httpClientBuilder.addInterceptor(chain -> {
             Request original = chain.request();
             HttpUrl originalHttpUrl = original.url();
-            HttpUrl url = originalHttpUrl.newBuilder().addQueryParameter("api_key", THE_MOVIE_DB_API_TOKEN).build();
+            HttpUrl url = originalHttpUrl.newBuilder().
+                    addQueryParameter("api_key", THE_MOVIE_DB_API_TOKEN).build();
             Request.Builder requestBuilder = original.newBuilder().url(url);
             return chain.proceed(requestBuilder.build());
         });

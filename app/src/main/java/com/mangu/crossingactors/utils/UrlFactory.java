@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Utils;
+package com.mangu.crossingactors.utils;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +12,7 @@ public class UrlFactory {
     }
 
     public static Intent generateBrowserIntent(@NonNull String destination) {
-        String destination_url = formQuery(destination);
-        return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(destination_url));
+        String destinationUrl = formQuery(destination);
+        return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(destinationUrl));
     }
 }

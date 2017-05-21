@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Model;
+package com.mangu.crossingactors.models;
 
 import android.annotation.SuppressLint;
 import android.os.Parcel;

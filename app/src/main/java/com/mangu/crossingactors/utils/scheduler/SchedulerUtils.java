@@ -1,4 +1,4 @@
-package com.mangu.crossingactors.Utils.scheduler;
+package com.mangu.crossingactors.utils.scheduler;
 
 
 public class SchedulerUtils {
