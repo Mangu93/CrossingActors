@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,7 +37,7 @@ import me.piruin.quickaction.QuickAction;
 
 import static com.mangu.crossingactors.Utils.ComparatorFactory.MOVIE_POSTER_KEY;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "WeakerAccess"})
 public class ComparationDone extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private static final int ID_POSTER = 2;
@@ -120,18 +118,15 @@ public class ComparationDone extends AppCompatActivity implements AdapterView.On
                     }
                 });
 
-        iv_poster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isImageFitToScreen) {
-                    isImageFitToScreen=false;
-                    iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                    iv_poster.setAdjustViewBounds(true);
-                }else{
-                    isImageFitToScreen=true;
-                    iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                    iv_poster.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
+        iv_poster.setOnClickListener(view -> {
+            if(isImageFitToScreen) {
+                isImageFitToScreen=false;
+                iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                iv_poster.setAdjustViewBounds(true);
+            }else{
+                isImageFitToScreen=true;
+                iv_poster.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+                iv_poster.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         });
         popupWindow.setFocusable(true);
@@ -140,6 +135,7 @@ public class ComparationDone extends AppCompatActivity implements AdapterView.On
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
         destination_url = UrlFactory.generateBrowserIntent(this.mv.getItem(i));

@@ -49,6 +49,7 @@ public class ComparatorFactory {
             }
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public List<String> getPosters() {
             List<String> results = new ArrayList<>();
             for (Map.Entry<String, String> entry : posters.entrySet()) {
