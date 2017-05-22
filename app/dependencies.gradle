@@ -1,0 +1,58 @@
+ext {
+    versions = [
+            okHttp        : "3.4.1",
+            support       : "25.3.1",
+            espresso      : '2.2.2',
+
+            espressoRunner: '0.5',
+            powerMock     : '1.6.6',
+            hamcrest      : '1.3',
+            retrofit      : '2.2.0',
+            butterKnife   : '8.5.1'
+    ]
+    junit = [junit: "junit:junit:4.12"]
+
+    supportDeps = [
+            supportAnnotation: "com.android.support:support-annotations:$versions.support",
+            recyclerView     : "com.android.support:recyclerview-v7:$versions.support",
+            design           : "com.android.support:design:$versions.support",
+            appcompatV7      : "com.android.support:appcompat-v7:$versions.support"
+    ]
+
+    rxJava = [
+            rxJava   : "io.reactivex.rxjava2:rxjava:2.1.0",
+            rxAndroid: "io.reactivex.rxjava2:rxandroid:2.0.1"
+    ]
+
+    retrofit = [
+            retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+            rxAdapter    : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+            gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    ]
+
+    okHttp = [
+            logger: "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
+            okhttp: "com.squareup.okhttp3:okhttp-urlconnection:$versions.okHttp"
+    ]
+
+    unitTest = [
+            harcrestCore       : "org.hamcrest:hamcrest-core:$versions.hamcrest",
+            harmcrestLib       : "org.hamcrest:hamcrest-library:$versions.hamcrest",
+            hamcrestIntegration: "org.hamcrest:hamcrest-integration:$versions.hamcrest",
+            supportAnnotation  : "com.android.support:support-annotations:$versions.support",
+    ] + junit
+
+    androidTests = [
+            espressoCore   : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+            espressoContrib: "com.android.support.test.espresso:espresso-contrib:$versions.espresso",
+            espressoIntents: "com.android.support.test.espresso:espresso-intents:$versions.espresso",
+            testRunner     : "com.android.support.test:runner:$versions.espressoRunner",
+            testRules      : "com.android.support.test:rules:$versions.espressoRunner",
+    ]
+
+    supportLibs = supportDeps.values()
+    networkLibs = retrofit.values() + okHttp.values()
+    rxJavaLibs = rxJava.values()
+    unitTestLibs = unitTest.values()
+    androidTestsLibs = androidTests.values() + supportLibs
+}
