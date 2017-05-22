@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
@@ -27,7 +28,6 @@ import com.mangu.crossingactors.utils.scheduler.SchedulerUtils;
 import com.mangu.crossingactors.views.SearchAdapter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int MESSAGE_QUERY_UPDATE = 5612;
     public static final int QUERY_UPDATE_DELAY_MILLIS = 100;
-    private static final Comparator<Result> actor_comparator
-            = ComparatorFactory.getActorComparator();
+    public static final int DELAY_MILLIS = 5000;
     public static ActorService myActorFactory = makeActorService();
     public static ComparatorFactory.CoincidenceMap coincidenceMap
             = new ComparatorFactory.CoincidenceMap();
@@ -54,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_search)
     Button btnSearch;
     SearchAdapter searchAdapter;
+    @BindView(R.id.pb_list_loading)
+    ProgressBar pbListLoading;
     private ArrayList<Result> mActors = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void compareMovies(View view) {
+        pbListLoading.setVisibility(View.VISIBLE);
         ArrayList<Result> actorResults = searchAdapter.getDataSet();
         if (actorResults.size() >= 2) {
             DataManager dm = new DataManager(myActorFactory);
@@ -144,8 +146,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == START_MAIN_ACTIVITY_FROM_COMPARATION && resultCode == Activity.RESULT_FIRST_USER) {
-                compareMovies(null);
+        if (requestCode == START_MAIN_ACTIVITY_FROM_COMPARATION
+                && resultCode == Activity.RESULT_FIRST_USER) {
+            compareMovies(null);
         }
     }
 
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> posters = coincidenceMap.getPosters();
         intent.putExtra(Cast.class.getName(), (ArrayList) movieCoincidences);
         intent.putExtra(MOVIE_POSTER_KEY, (ArrayList) posters);
+        pbListLoading.setVisibility(View.INVISIBLE);
         startActivityForResult(intent, START_MAIN_ACTIVITY_FROM_COMPARATION);
     }
 
@@ -164,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
         }
         coincidenceMap.restartProcessed();
         if (lastToPass) {
-            processCoincidences(coincidenceMap.getCoincidences(searchAdapter.getItemCount()));
+            mHandler.postDelayed(() -> processCoincidences(
+                    coincidenceMap.getCoincidences(searchAdapter.getItemCount()))
+                    , DELAY_MILLIS);
         }
     }
 }
