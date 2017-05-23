@@ -1,5 +1,7 @@
 package com.mangu.crossingactors.networking.services;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +34,7 @@ public class ActorServiceFactory {
         return retrofit.create(ActorService.class);
     }
 
+    @NonNull
     private static OkHttpClient makeOkHttpClient() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -48,6 +51,7 @@ public class ActorServiceFactory {
         return httpClientBuilder.build();
     }
 
+    @NonNull
     private static Gson makeGson() {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")

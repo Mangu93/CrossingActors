@@ -1,7 +1,6 @@
 package com.mangu.crossingactors.networking.services;
 
 import com.mangu.crossingactors.models.ActorListResponse;
-import com.mangu.crossingactors.models.Credits;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -18,5 +17,9 @@ public interface ActorService {
 
     @Headers({"api_key: " + THE_MOVIE_DB_API_TOKEN})
     @GET("person/{person_id}/movie_credits")
-    Observable<Credits> getActor(@Path("person_id") String id);
+    Observable<com.mangu.crossingactors.models.Credits> getActor(@Path("person_id") String id);
+
+    @Headers({"api_key: " + THE_MOVIE_DB_API_TOKEN})
+    @GET("person/{person_id}/tv_credits")
+    Observable<com.mangu.crossingactors.models.tv.Credits> getActorTv(@Path("person_id") String id);
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import static com.mangu.crossingactors.utils.ImageFactory.formUrlPic;
 
+@SuppressWarnings("CanBeFinal")
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHolder> {
     private Context mContext;
     private ArrayList<Result> mDataSet = new ArrayList<>();
@@ -74,7 +75,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
         }
     }
 
-    public void delete(int position) {
+    private void delete(int position) {
         mDataSet.remove(position);
         notifyItemRemoved(position);
     }
@@ -87,6 +88,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ResultHold
 
     public class ResultHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
+        @SuppressWarnings("unused")
         String id;
         ImageView searchIcon;
         ImageView delete;

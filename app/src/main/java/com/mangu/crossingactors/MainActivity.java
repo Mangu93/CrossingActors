@@ -36,26 +36,32 @@ import io.reactivex.Observable;
 
 import static com.mangu.crossingactors.networking.services.ActorServiceFactory.makeActorService;
 import static com.mangu.crossingactors.utils.ComparatorFactory.MOVIE_POSTER_KEY;
+import static com.mangu.crossingactors.utils.ModelFactory.joinCredits;
 import static com.mangu.crossingactors.utils.UtilsFactory.START_MAIN_ACTIVITY_FROM_COMPARATION;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int MESSAGE_QUERY_UPDATE = 5612;
-    public static final int QUERY_UPDATE_DELAY_MILLIS = 100;
-    public static final int DELAY_MILLIS = 5000;
-    public static ActorService myActorFactory = makeActorService();
-    public static ComparatorFactory.CoincidenceMap coincidenceMap
+    private static final int MESSAGE_QUERY_UPDATE = 5612;
+    private static final int QUERY_UPDATE_DELAY_MILLIS = 100;
+    private static final int DELAY_MILLIS = 5000;
+    private static final ActorService myActorFactory = makeActorService();
+    private static final ComparatorFactory.CoincidenceMap coincidenceMap
             = new ComparatorFactory.CoincidenceMap();
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @BindView(R.id.floating_search_view)
     FloatingSearchView floatingSearchView;
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @BindView(R.id.btn_search)
     Button btnSearch;
-    SearchAdapter searchAdapter;
+    private SearchAdapter mSearchAdapter;
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @BindView(R.id.pb_list_loading)
     ProgressBar pbListLoading;
-    private ArrayList<Result> mActors = new ArrayList<>();
+    private final ArrayList<Result> mActors = new ArrayList<>();
+    @SuppressWarnings("CanBeFinal")
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -79,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayoutManager linearLayout = new LinearLayoutManager(
                 getApplicationContext(), LinearLayout.VERTICAL, false);
-        searchAdapter = new SearchAdapter(getApplicationContext(), mActors);
-        recyclerView.setAdapter(searchAdapter);
+        mSearchAdapter = new SearchAdapter(getApplicationContext(), mActors);
+        recyclerView.setAdapter(mSearchAdapter);
         recyclerView.setLayoutManager(linearLayout);
 
         floatingSearchView.setOnQueryChangeListener((oldQuery, newQuery) -> {
@@ -96,11 +102,11 @@ public class MainActivity extends AppCompatActivity {
             public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
                 floatingSearchView.setSearchText("");
                 floatingSearchView.clearQuery();
-                ArrayList<Result> results = searchAdapter.getDataSet();
+                ArrayList<Result> results = mSearchAdapter.getDataSet();
                 results.add((Result) searchSuggestion);
-                searchAdapter.swapResults(results);
-                searchAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(searchAdapter);
+                mSearchAdapter.swapResults(results);
+                mSearchAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(mSearchAdapter);
                 btnSearch.setVisibility(View.VISIBLE);
             }
 
@@ -113,14 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void showActors(List<Result> results) {
+    private void showActors(List<Result> results) {
         btnSearch.setVisibility(View.INVISIBLE);
         floatingSearchView.swapSuggestions(results);
     }
 
+    @SuppressWarnings({"SameParameterValue", "UnusedParameters", "Convert2MethodRef", "WeakerAccess"})
     public void compareMovies(View view) {
         pbListLoading.setVisibility(View.VISIBLE);
-        ArrayList<Result> actorResults = searchAdapter.getDataSet();
+        ArrayList<Result> actorResults = mSearchAdapter.getDataSet();
         if (actorResults.size() >= 2) {
             DataManager dm = new DataManager(myActorFactory);
             for (int index = 0; index < actorResults.size(); index++) {
@@ -131,7 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 final boolean l = last;
                 Observable<Credits> castObservable = dm.getActor(Integer.toString(e.getId()));
-                castObservable.compose(SchedulerUtils.ioToMain())
+                Observable<com.mangu.crossingactors.models.tv.Credits> tvObservable =
+                        dm.getActorTv(Integer.toString(e.getId()));
+                Observable.zip(castObservable, tvObservable,
+                        (credits, credits2) -> joinCredits(credits, credits2)).
+                        compose(SchedulerUtils.ioToMain())
                         .subscribe(act -> processActor(act, l),
                                 throwable ->
                                         Log.e("ObservableError", throwable.getLocalizedMessage()));
@@ -158,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> posters = coincidenceMap.getPosters();
         intent.putExtra(Cast.class.getName(), (ArrayList) movieCoincidences);
         intent.putExtra(MOVIE_POSTER_KEY, (ArrayList) posters);
+        coincidenceMap.restartPosters();
         pbListLoading.setVisibility(View.INVISIBLE);
         startActivityForResult(intent, START_MAIN_ACTIVITY_FROM_COMPARATION);
     }
@@ -169,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         coincidenceMap.restartProcessed();
         if (lastToPass) {
             mHandler.postDelayed(() -> processCoincidences(
-                    coincidenceMap.getCoincidences(searchAdapter.getItemCount()))
+                    coincidenceMap.getCoincidences(mSearchAdapter.getItemCount()))
                     , DELAY_MILLIS);
         }
     }

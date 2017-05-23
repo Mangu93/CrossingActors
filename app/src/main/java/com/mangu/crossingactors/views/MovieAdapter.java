@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 public class MovieAdapter extends ArrayAdapter<String> {
-    public String name;
+    @SuppressWarnings({"FieldCanBeLocal", "CanBeFinal", "unused"})
     private Context mContext;
     private ArrayList<String> mDataSet;
 
@@ -25,6 +25,7 @@ public class MovieAdapter extends ArrayAdapter<String> {
         this.mDataSet = dataSet;
     }
 
+    @SuppressWarnings("unused")
     public void swapItems(ArrayList<String> newTasks) {
         this.mDataSet = newTasks;
         notifyDataSetChanged();
@@ -66,7 +67,7 @@ public class MovieAdapter extends ArrayAdapter<String> {
     }
 
     private static class ViewHolder {
-        protected TextView name;
+        TextView name;
     }
 
 }

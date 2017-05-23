@@ -14,6 +14,7 @@ public class DataManager {
 
     private final ActorService mActorService;
 
+    @SuppressWarnings("SameParameterValue")
     @Inject
     public DataManager(ActorService actorService) {
         this.mActorService = actorService;
@@ -25,6 +26,10 @@ public class DataManager {
 
     public Observable<Credits> getActor(String id) {
         return mActorService.getActor(id);
+    }
+
+    public Observable<com.mangu.crossingactors.models.tv.Credits> getActorTv(String id) {
+        return mActorService.getActorTv(id);
     }
 
 }

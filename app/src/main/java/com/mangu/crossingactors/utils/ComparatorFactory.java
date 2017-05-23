@@ -16,15 +16,16 @@ public class ComparatorFactory {
     private static final Comparator<Result> ACTOR_COMPARATOR =
             (result, t1) -> result.getName().compareTo(t1.getName());
 
+    @SuppressWarnings("unused")
     public static Comparator<Result> getActorComparator() {
         return ACTOR_COMPARATOR;
     }
 
     public static class CoincidenceMap {
-        private Map<String, Integer> mCoincidenceMap; // Movie -> Coincidences
+        private final Map<String, Integer> mCoincidenceMap; // Movie -> Coincidences
         //To avoid errors on the API, like duplicates movies for the same actor
-        private Set<String> mAlreadyProcessed;
-        private Map<String, String> mPosters; //Movie -> Posters
+        private final Set<String> mAlreadyProcessed;
+        private final Map<String, String> mPosters; //Movie -> Posters
 
         public CoincidenceMap() {
             this.mCoincidenceMap = new TreeMap<>();
@@ -40,6 +41,9 @@ public class ComparatorFactory {
             this.mAlreadyProcessed.clear();
         }
 
+        public void restartPosters() {
+            this.mPosters.clear();
+        }
         public void add(String movie, String posterPath) {
             if (mCoincidenceMap.containsKey(movie) &&
                     !mAlreadyProcessed.contains(movie)) {
@@ -61,6 +65,7 @@ public class ComparatorFactory {
             return results;
         }
 
+        @SuppressWarnings("SuspiciousMethodCalls")
         public List<String> getCoincidences(int cut) {
             List<String> results = new ArrayList<>();
             for (Object movie : mCoincidenceMap.keySet()) {

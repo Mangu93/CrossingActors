@@ -1,5 +1,6 @@
 package com.mangu.crossingactors;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,11 +44,14 @@ public class ComparationDone extends AppCompatActivity
 
     private static final int ID_POSTER = 2;
     private static final int ID_SEARCH = 1;
+    @SuppressWarnings("CanBeFinal")
     @BindView(R.id.tv_been_together)
     TextView tvBeenTogether;
     MovieAdapter mv;
+    @SuppressWarnings("CanBeFinal")
     @BindView(R.id.listview)
     ListView listview;
+    @SuppressWarnings("CanBeFinal")
     @BindView(R.id.comparation_done_layout)
     LinearLayout comparationDoneLayout;
 
@@ -105,7 +109,8 @@ public class ComparationDone extends AppCompatActivity
     }
 
     private void showPopup() {
-        View popUpView = getLayoutInflater().inflate(R.layout.popup_image, null);
+        @SuppressLint("InflateParams") View popUpView = getLayoutInflater().
+                inflate(R.layout.popup_image, null);
         PopupWindow popupWindow = new PopupWindow(popUpView,
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);

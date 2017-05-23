@@ -3,6 +3,7 @@ package com.mangu.crossingactors.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("ALL")
 public class Cast {
 
     @SerializedName("adult")
