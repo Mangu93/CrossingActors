@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mangu.crossingactors.R;
 
@@ -22,4 +23,12 @@ public class UtilsFactory {
         btn.setLayoutParams(layoutParams);
         return btn;
     }
+    public static Toast createZoomInToast(@NonNull Context context, boolean zoomIn) {
+        if(zoomIn) {
+            return Toast.makeText(context, context.getText(R.string.tap_to_in), Toast.LENGTH_SHORT);
+        }
+        return Toast.makeText(context, context.getText(R.string.tap_to_out), Toast.LENGTH_SHORT);
+
+    }
+
 }

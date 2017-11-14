@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Matching Actors</string>
+    <string name="search">Buscar</string>
+    <string name="compare_movies">Comparar peliculas y series</string>
+    <string name="been_together">Estos actores/actrices han trabajado en las siguientes peliculas:</string>
+    <string name="delete">Borrar</string>
+    <string name="retry">Lo siento pero su búsqueda no tuvo éxito</string>
+    <string name="poster">Poster</string>
+    <string name="retry_btn">Reintentar</string>
+    <string name="tap_to_in">Pulse en la imagen para hacer zoom</string>
+    <string name="tap_to_out">Pulse en la imagen para quitar zoom</string>
+    <string name="long_tap">Pulse en una película para ver mas detalles.</string>
+</resources>

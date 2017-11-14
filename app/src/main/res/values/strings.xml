@@ -1,10 +1,13 @@
 <resources>
-    <string name="app_name">Crossing Actors</string>
+    <string name="app_name">Matching Actors</string>
     <string name="search">Search</string>
     <string name="compare_movies">Compare movies and shows</string>
     <string name="been_together">These actors have been together in these movies or shows:</string>
     <string name="delete">Delete</string>
-    <string name="retry">Sorry, these actors have no movies or showsin common. \n\nIf you want, you can retry the search</string>
+    <string name="retry">Sorry, these actors have no movies or shows in common. \n\nIf you want, you can retry the search</string>
     <string name="poster">Poster</string>
     <string name="retry_btn">Retry</string>
+    <string name="tap_to_in">Tap in the picture to zoom in</string>
+    <string name="tap_to_out">Tap in the picture to zoom out</string>
+    <string name="long_tap">Long press a movie to see more details</string>
 </resources>

@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -37,6 +38,7 @@ import me.piruin.quickaction.ActionItem;
 import me.piruin.quickaction.QuickAction;
 
 import static com.mangu.crossingactors.utils.ComparatorFactory.MOVIE_POSTER_KEY;
+import static com.mangu.crossingactors.utils.UtilsFactory.createZoomInToast;
 
 @SuppressWarnings({"unchecked", "WeakerAccess"})
 public class ComparationDone extends AppCompatActivity
@@ -87,6 +89,8 @@ public class ComparationDone extends AppCompatActivity
             comparationDoneLayout.addView(retryBtn);
         }
         listview.setOnItemLongClickListener(this);
+        Toast.makeText(this.getApplicationContext(), getString(R.string.long_tap),
+                Toast.LENGTH_SHORT).show();
     }
 
     public void prepareQuickAction() {
@@ -127,7 +131,7 @@ public class ComparationDone extends AppCompatActivity
                         ivPoster.setImageBitmap(resource);
                     }
                 });
-
+        createZoomInToast(this.getApplicationContext(), true).show();
         ivPoster.setOnClickListener(view -> {
             if (isImageFitToScreen) {
                 isImageFitToScreen = false;
@@ -142,6 +146,7 @@ public class ComparationDone extends AppCompatActivity
                                 RelativeLayout.LayoutParams.MATCH_PARENT));
                 ivPoster.setScaleType(ImageView.ScaleType.FIT_XY);
             }
+            createZoomInToast(this.getApplicationContext(), !isImageFitToScreen).show();
         });
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
